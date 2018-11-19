@@ -48,14 +48,14 @@ namespace Demo.API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            await _dataContext.AddAsync(value);
+            value.Id = 0;
+            await _dataContext.Values.AddAsync(value);
             await _dataContext.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = value.Id }, value);
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
+        [HttpPut()]
         public async Task<IActionResult> Put([FromBody] Value value)
         {
             if (!ModelState.IsValid)
