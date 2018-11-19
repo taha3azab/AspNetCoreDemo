@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsEmail } from 'class-validator';
 
 export class Value {
   public id: number;
@@ -6,8 +6,12 @@ export class Value {
   @IsNotEmpty()
   public name: string;
 
-  constructor(id?: number, name?: string) {
+  @IsEmail()
+  public email: string;
+
+  constructor(id?: number, name?: string, email?: string) {
     this.id = id || 0;
     this.name = name || '';
+    this.email = email || '';
   }
 }

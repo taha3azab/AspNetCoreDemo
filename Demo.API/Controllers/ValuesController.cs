@@ -16,19 +16,20 @@ namespace Demo.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ValuesController(DataContext dataContext)
+        public ValuesController(IUnitOfWork unitOfWork)
         {
-            _dataContext = dataContext;
+            _unitOfWork = unitOfWork;
         }
 
         // GET api/values
         [HttpGet]
         [Produces(typeof(IEnumerable<Value>))]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int pageIndex= 0, int pageSize=20)
         {
-            var values = await _dataContext.Values.ToListAsync();
+            var values = await _unitOfWork.GetRepository<Value>()
+                                            .GetPagedListAsync(null, null, null, pageIndex: 0, pageSize: 20);
             return Ok(values);
         }
 
@@ -36,7 +37,8 @@ namespace Demo.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var value = await _dataContext.Values.FirstOrDefaultAsync(v => v.Id == id);
+            var value = await _unitOfWork.GetRepository<Value>()
+                                        .GetFirstOrDefaultAsync(v => v, v => v.Id == id, x => x.OrderBy(v => v.Id));
             if (value == null)
                 return NotFound();
             return Ok(value);
@@ -49,8 +51,8 @@ namespace Demo.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             value.Id = 0;
-            await _dataContext.Values.AddAsync(value);
-            await _dataContext.SaveChangesAsync();
+            await _unitOfWork.GetRepository<Value>().InsertAsync(value);
+            await _unitOfWork.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = value.Id }, value);
         }
 
@@ -61,12 +63,13 @@ namespace Demo.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var obj = await _dataContext.Values.FirstOrDefaultAsync(v => v.Id == value.Id);
-            if (obj == null)
-                return NotFound(value);
-
-            obj.Name = value.Name;
-            await _dataContext.SaveChangesAsync();
+            // var obj = await _unitOfWork.GetRepository<Value>().GetFirstOrDefaultAsync(v=>v, v => v.Id == value.Id);
+            // if (obj == null)
+            //     return NotFound(value);
+            //  obj.Name = value.Name;
+            //             obj.Email = value.Email;
+            _unitOfWork.GetRepository<Value>().Update(value);
+            await _unitOfWork.SaveChangesAsync();
             return Ok(value);
         }
 
@@ -74,12 +77,14 @@ namespace Demo.API.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            var value = await _dataContext.Values.FirstOrDefaultAsync(v => v.Id == id);
-            if (value != null)
-            {
-                _dataContext.Values.Remove(value);
-                await _dataContext.SaveChangesAsync();
-            }
+            _unitOfWork.GetRepository<Value>().Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            // var value = await _unitOfWork.GetRepository<Value>().GetFirstOrDefaultAsync(v => v.Id == id);
+            // if (value != null)
+            // {
+            //     _dataContext.Values.Remove(value);
+            //     await _dataContext.SaveChangesAsync();
+            // }
         }
     }
 }
