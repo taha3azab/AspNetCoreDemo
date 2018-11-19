@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Value } from '../shared/models/value.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WebService {
   constructor(private https: Http) {}
 
