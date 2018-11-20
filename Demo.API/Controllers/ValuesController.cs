@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Demo.API.Data;
 using Demo.API.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.API.Controllers
@@ -25,8 +27,8 @@ namespace Demo.API.Controllers
 
         // GET api/values
         [HttpGet]
-        [Produces(typeof(IEnumerable<Value>))]
-        public async Task<IActionResult> Get(int pageIndex= 0, int pageSize=20)
+        [ProducesResponseType(typeof(IPagedList<Value>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 20)
         {
             var values = await _unitOfWork.GetRepository<Value>()
                                             .GetPagedListAsync(null, null, null, pageIndex: 0, pageSize: 20);
@@ -35,6 +37,8 @@ namespace Demo.API.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(int id)
         {
             var value = await _unitOfWork.GetRepository<Value>()
@@ -46,6 +50,8 @@ namespace Demo.API.Controllers
 
         // POST api/values
         [HttpPost]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Value), StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] Value value)
         {
             if (!ModelState.IsValid)
@@ -58,16 +64,12 @@ namespace Demo.API.Controllers
 
         // PUT api/values/5
         [HttpPut()]
-        public async Task<IActionResult> Put([FromBody] Value value)
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
+         public async Task<IActionResult> Put([FromBody] Value value)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            // var obj = await _unitOfWork.GetRepository<Value>().GetFirstOrDefaultAsync(v=>v, v => v.Id == value.Id);
-            // if (obj == null)
-            //     return NotFound(value);
-            //  obj.Name = value.Name;
-            //             obj.Email = value.Email;
             _unitOfWork.GetRepository<Value>().Update(value);
             await _unitOfWork.SaveChangesAsync();
             return Ok(value);
@@ -79,12 +81,6 @@ namespace Demo.API.Controllers
         {
             _unitOfWork.GetRepository<Value>().Delete(id);
             await _unitOfWork.SaveChangesAsync();
-            // var value = await _unitOfWork.GetRepository<Value>().GetFirstOrDefaultAsync(v => v.Id == id);
-            // if (value != null)
-            // {
-            //     _dataContext.Values.Remove(value);
-            //     await _dataContext.SaveChangesAsync();
-            // }
         }
     }
 }
