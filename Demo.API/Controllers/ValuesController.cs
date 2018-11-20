@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Demo.API.Data;
 using Demo.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +27,7 @@ namespace Demo.API.Controllers
         [ProducesResponseType(typeof(IPagedList<Value>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 20)
         {
-            var values = await _unitOfWork.GetRepository<Value>()
-                                            .GetPagedListAsync(null, null, null, pageIndex: 0, pageSize: 20);
+            var values = await _unitOfWork.GetRepository<Value>().GetPagedListAsync(null, null, null, pageIndex: 0, pageSize: 20);
             return Ok(values);
         }
 
@@ -66,7 +62,7 @@ namespace Demo.API.Controllers
         [HttpPut()]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
-         public async Task<IActionResult> Put([FromBody] Value value)
+        public async Task<IActionResult> Put([FromBody] Value value)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

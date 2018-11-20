@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Demo.API.Data;
 using Microsoft.AspNetCore.Builder;
@@ -67,6 +68,7 @@ namespace Demo.API
 
                 });
                 c.OperationFilter<ApiVersionOperationFilter>();
+                c.OperationFilter<AddAuthTokenHeaderParameter>();
             });
         }
 
@@ -117,7 +119,6 @@ namespace Demo.API
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {
-            
             var actionApiVersionModel = context.ApiDescription.ActionDescriptor?.GetApiVersion();
             if (actionApiVersionModel == null)
             {
@@ -136,6 +137,25 @@ namespace Demo.API
                   .SelectMany(p => actionApiVersionModel.ImplementedApiVersions.OrderByDescending(v => v)
                     .Select(version => $"{p};v={version.ToString()}")).ToList();
             }
+        }
+    }
+    public class AddAuthTokenHeaderParameter : IOperationFilter
+    {
+        public void Apply(Operation operation, OperationFilterContext context)
+        {
+
+            if (operation.Parameters == null)
+                operation.Parameters = new List<IParameter>();
+
+
+            // operation.Parameters.Add(new NonBodyParameter()
+            // {
+            //     Name = "AuthToken",
+            //     In = "header",
+            //     Type = "string",
+            //     Required = false
+            // });
+
         }
     }
 
