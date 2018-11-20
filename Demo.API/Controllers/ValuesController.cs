@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Demo.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -13,6 +14,7 @@ namespace Demo.API.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ValuesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -48,10 +50,8 @@ namespace Demo.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Value), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] Value value)
+        public async Task<IActionResult> Post(Value value)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             value.Id = 0;
             await _unitOfWork.GetRepository<Value>().InsertAsync(value);
             await _unitOfWork.SaveChangesAsync();
@@ -62,10 +62,8 @@ namespace Demo.API.Controllers
         [HttpPut()]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Put([FromBody] Value value)
+        public async Task<IActionResult> Put(Value value)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             _unitOfWork.GetRepository<Value>().Update(value);
             await _unitOfWork.SaveChangesAsync();
             return Ok(value);

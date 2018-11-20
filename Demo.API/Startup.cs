@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Demo.API.Data;
 using Demo.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -35,6 +38,19 @@ namespace Demo.API
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddXmlSerializerFormatters();
             services.AddCors();
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             // Add API Versioning
             // the default version is 1.0
@@ -73,7 +89,6 @@ namespace Demo.API
                 c.OperationFilter<AddAuthTokenHeaderParameter>();
             });
 
-            services.AddScoped<IAuthRepository, AuthRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,7 +120,7 @@ namespace Demo.API
                 c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned Api v1.0");
                 c.SwaggerEndpoint("/swagger/v2.0/swagger.json", "Versioned Api v2.0");
             });
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
