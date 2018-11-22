@@ -45,6 +45,7 @@ namespace Demo.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
+            throw new Exception("nooooooooooooooo");
             var user = await _authRepository.Login(userForLogin.Username.ToLower(), userForLogin.Password);
             if (user == null)
                 return Unauthorized();
