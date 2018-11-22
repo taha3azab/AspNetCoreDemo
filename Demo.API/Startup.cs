@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Text;
 using Demo.API.Data;
 using Demo.API.Helpers;
-using Demo.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Demo.API
 {
@@ -41,6 +35,7 @@ namespace Demo.API
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddXmlSerializerFormatters();
+
             services.AddCors();
 
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -109,13 +104,13 @@ namespace Demo.API
                 {
                     builder.Run(async context =>
                     {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature>();
                         if (error != null)
-                            {
-                                context.Response.AddApplicationError(error.Error.Message);
-                                await context.Response.WriteAsync(error.Error.Message);
-                            }
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
                     });
                 });
 
@@ -142,58 +137,4 @@ namespace Demo.API
             app.UseMvc();
         }
     }
-
-    public static class ActionDescriptorExtensions
-    {
-        public static ApiVersionModel GetApiVersion(this ActionDescriptor actionDescriptor)
-        {
-            return actionDescriptor?.Properties
-              .Where((kvp) => ((Type)kvp.Key).Equals(typeof(ApiVersionModel)))
-              .Select(kvp => kvp.Value as ApiVersionModel).FirstOrDefault();
-        }
-    }
-    public class ApiVersionOperationFilter : IOperationFilter
-    {
-        public void Apply(Operation operation, OperationFilterContext context)
-        {
-            var actionApiVersionModel = context.ApiDescription.ActionDescriptor?.GetApiVersion();
-            if (actionApiVersionModel == null)
-            {
-                return;
-            }
-
-            if (actionApiVersionModel.DeclaredApiVersions.Any())
-            {
-                operation.Produces = operation.Produces
-                  .SelectMany(p => actionApiVersionModel.DeclaredApiVersions
-                    .Select(version => $"{p};v={version.ToString()}")).ToList();
-            }
-            else
-            {
-                operation.Produces = operation.Produces
-                  .SelectMany(p => actionApiVersionModel.ImplementedApiVersions.OrderByDescending(v => v)
-                    .Select(version => $"{p};v={version.ToString()}")).ToList();
-            }
-        }
-    }
-    public class AddAuthTokenHeaderParameter : IOperationFilter
-    {
-        public void Apply(Operation operation, OperationFilterContext context)
-        {
-
-            if (operation.Parameters == null)
-                operation.Parameters = new List<IParameter>();
-
-
-            // operation.Parameters.Add(new NonBodyParameter()
-            // {
-            //     Name = "AuthToken",
-            //     In = "header",
-            //     Type = "string",
-            //     Required = false
-            // });
-
-        }
-    }
-
 }

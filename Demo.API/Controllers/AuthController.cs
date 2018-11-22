@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Demo.API.Data;
 using Demo.API.Dtos;
 using Demo.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,11 +19,11 @@ namespace Demo.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly IAuthRepository _authRepo;
         private readonly IConfiguration _config;
         public AuthController(IAuthRepository authRepository, IConfiguration configuration)
         {
-            _authRepository = authRepository;
+            _authRepo = authRepository;
             _config = configuration;
         }
 
@@ -30,14 +31,14 @@ namespace Demo.API.Controllers
         public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
         {
             userForRegister.Username = userForRegister.Username.ToLower();
-            if (await _authRepository.UserExists(userForRegister.Username))
+            if (await _authRepo.UserExists(userForRegister.Username))
                 return BadRequest("Username already exists");
 
             var userToCreate = new User
             {
                 Username = userForRegister.Username
             };
-            var createdUser = await _authRepository.Register(userToCreate, userForRegister.Password);
+            var createdUser = await _authRepo.Register(userToCreate, userForRegister.Password);
             return StatusCode(StatusCodes.Status201Created);
             //return CreatedAtRoute("", createdUser);
         }
@@ -45,7 +46,7 @@ namespace Demo.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
-            var user = await _authRepository.Login(userForLogin.Username.ToLower(), userForLogin.Password);
+            var user = await _authRepo.Login(userForLogin.Username.ToLower(), userForLogin.Password);
             if (user == null)
                 return Unauthorized();
 
@@ -73,5 +74,13 @@ namespace Demo.API.Controllers
             });
         }
 
+        [HttpPost("change_password")]
+        public async Task<IActionResult> ChangePassword(UserForChangePasswordDto userForChangePassword)
+        {
+            var user = await _authRepo.ChangePassword(userForChangePassword.Username, userForChangePassword.OldPassword, userForChangePassword.NewPassword);
+            if (user == null)
+                return Unauthorized();
+            return StatusCode(StatusCodes.Status202Accepted);
+        }
     }
 }

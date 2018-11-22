@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Demo.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -25,20 +24,6 @@ namespace Demo.API.Data
 
             return user;
         }
-
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != passwordHash[i]) return false;
-                }
-            }
-            return true;
-        }
-
         public async Task<User> Register(User user, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -47,6 +32,26 @@ namespace Demo.API.Data
             user.PasswordSalt = passwordSalt;
 
             await _unitOfWork.GetRepository<User>().InsertAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return user;
+        }
+        public async Task<bool> UserExists(string username)
+        {
+            return await Task.Run(() => _unitOfWork.GetRepository<User>().Count(u => u.Username == username) > 0);
+        }
+        public async Task<User> ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            var user = await Login(username, oldPassword);
+            if (user == null)
+                return null;
+
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _unitOfWork.GetRepository<User>().Update(user);
             await _unitOfWork.SaveChangesAsync();
 
             return user;
@@ -60,10 +65,17 @@ namespace Demo.API.Data
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
-
-        public async Task<bool> UserExists(string username)
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            return await Task.Run(() => _unitOfWork.GetRepository<User>().Count(u => u.Username == username) > 0);
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i]) return false;
+                }
+            }
+            return true;
         }
     }
 }

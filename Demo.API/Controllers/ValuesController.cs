@@ -59,7 +59,7 @@ namespace Demo.API.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut()]
+        [HttpPut]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
         public async Task<IActionResult> Put(Value value)
