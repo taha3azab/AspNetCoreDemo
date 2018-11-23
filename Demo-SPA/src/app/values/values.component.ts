@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WebService } from '../services/web.service';
+import { WebService } from '../_services/web.service';
 import { Value } from '../shared/models/value.model';
 
 @Component({
