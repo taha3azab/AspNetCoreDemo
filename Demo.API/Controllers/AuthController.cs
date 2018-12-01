@@ -74,6 +74,7 @@ namespace Demo.API.Controllers
             });
         }
 
+        [Authorize]
         [HttpPost("change_password")]
         public async Task<IActionResult> ChangePassword(UserForChangePasswordDto userForChangePassword)
         {

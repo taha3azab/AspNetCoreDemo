@@ -1,7 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
+using CacheManager.Core;
 using Demo.API.Data;
+using Demo.API.Dtos;
 using Demo.API.Helpers;
+using Demo.API.Models;
+using EFSecondLevelCache.Core;
+using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -32,23 +38,44 @@ namespace Demo.API
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
                     .AddUnitOfWork<DataContext>();
 
+            services.AddEFSecondLevelCache();
+
+            // Add an in-memory cache service provider
+            services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
+            services.AddSingleton(typeof(ICacheManagerConfiguration),
+                new CacheManager.Core.ConfigurationBuilder()
+                        .WithJsonSerializer()
+                        .WithMicrosoftMemoryCacheHandle()
+                        .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
+                        .Build());
+
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Latest)
-                .AddXmlSerializerFormatters();
+                    .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                    .AddXmlSerializerFormatters();
 
             services.AddCors();
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
+
+            services.AddAuthorization(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.AddPolicy(string.Empty, policy =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                });
             });
 
             // Add API Versioning
