@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Demo.API.Data;
 using Demo.API.Dtos;
+using Demo.API.Helpers;
 using Demo.API.Models;
+using JWT;
+using JWT.Algorithms;
+using JWT.Builder;
+using JWT.Serializers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,34 +49,57 @@ namespace Demo.API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
             var user = await _authRepo.Login(userForLogin.Username.ToLower(), userForLogin.Password);
             if (user == null)
                 return Unauthorized();
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
-            };
+            // var claims = new[]
+            // {
+            //     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            //     new Claim(ClaimTypes.Name, user.Username)
+            // };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = cred
-            };
+            // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            // var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            // var tokenDescriptor = new SecurityTokenDescriptor
+            // {
+            //     Subject = new ClaimsIdentity(claims),
+            //     Expires = DateTime.Now.AddDays(1),
+            //     SigningCredentials = cred
+            // };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            // var tokenHandler = new JwtSecurityTokenHandler();
+            // var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            // return Ok(new
+            // {
+            //     token = tokenHandler.WriteToken(token)
+            // });
+            var secret = _config.GetSection("AppSettings:Secret").Value;
+            var token = new JwtBuilder()
+                            .WithDateTimeProvider(new UtcDateTimeProvider())
+                            .WithAlgorithm(new HMACSHA256Algorithm())
+                            .WithSerializer(new JsonNetSerializer())
+                            .WithSecret(secret)
+                            .AddClaim(JwtRegisteredClaimNames.NameId, user.Id.ToString())
+                            .AddClaim(JwtRegisteredClaimNames.UniqueName, user.Username)
+                            .AddClaim(JwtRegisteredClaimNames.AuthTime, DateTime.UtcNow.ToString())
+                            .AddClaim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString())
+                            .AddClaim(JwtRegisteredClaimNames.Nbf, DateTime.UtcNow.ToString())
+                            .AddClaim(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddDays(1).ToString())
+                            // .IssuedAt(DateTime.Now)
+                            // .NotBefore(DateTime.Now)
+                            // .ExpirationTime(DateTime.Now.AddDays(1))
+                            .WithVerifySignature(true)
+                            .Build();
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = token
             });
+
         }
 
         [HttpPost("change_password")]
