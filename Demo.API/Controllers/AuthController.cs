@@ -24,11 +24,11 @@ namespace Demo.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepo;
+        private readonly IAuthService _authService;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository authRepository, IConfiguration configuration)
+        public AuthController(IAuthService authService, IConfiguration configuration)
         {
-            _authRepo = authRepository;
+            _authService = authService;
             _config = configuration;
         }
 
@@ -36,14 +36,14 @@ namespace Demo.API.Controllers
         public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
         {
             userForRegister.Username = userForRegister.Username.ToLower();
-            if (await _authRepo.UserExists(userForRegister.Username))
+            if (await _authService.UserExists(userForRegister.Username))
                 return BadRequest("Username already exists");
 
             var userToCreate = new User
             {
                 Username = userForRegister.Username
             };
-            var createdUser = await _authRepo.Register(userToCreate, userForRegister.Password);
+            var createdUser = await _authService.Register(userToCreate, userForRegister.Password);
             return StatusCode(StatusCodes.Status201Created);
             //return CreatedAtRoute("", createdUser);
         }
@@ -52,7 +52,7 @@ namespace Demo.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
-            var user = await _authRepo.Login(userForLogin.Username.ToLower(), userForLogin.Password);
+            var user = await _authService.Login(userForLogin.Username.ToLower(), userForLogin.Password);
             if (user == null)
                 return Unauthorized();
 
@@ -106,7 +106,7 @@ namespace Demo.API.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword(UserForChangePasswordDto userForChangePassword)
         {
-            var user = await _authRepo.ChangePassword(userForChangePassword.Username, userForChangePassword.OldPassword, userForChangePassword.NewPassword);
+            var user = await _authService.ChangePassword(userForChangePassword.Username, userForChangePassword.OldPassword, userForChangePassword.NewPassword);
             if (user == null)
                 return Unauthorized();
             return StatusCode(StatusCodes.Status202Accepted);

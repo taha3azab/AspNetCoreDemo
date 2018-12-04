@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Demo.API.Data
 {
-    public class AuthRepository : IAuthRepository
+    public class AuthService : IAuthService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AuthRepository(IUnitOfWork unitOfWork)
+        public AuthService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
