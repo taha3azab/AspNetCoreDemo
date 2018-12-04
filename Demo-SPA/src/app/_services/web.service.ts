@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Value } from '../shared/models/value.model';
 
 @Injectable()
 export class WebService {
-  constructor(private https: Http) {}
+  constructor(private https: HttpClient) {}
 
   getValues() {
     return this.https.get('https://localhost:5001/api/values').toPromise();

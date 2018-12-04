@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
+using CacheManager.Core;
 using Demo.API.Data;
+using Demo.API.Dtos;
 using Demo.API.Helpers;
 using JWT.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,9 +44,20 @@ namespace Demo.API
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
                     .AddUnitOfWork<DataContext>();
 
+            services.AddEFSecondLevelCache();
+
+            // Add an in-memory cache service provider
+            services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
+            services.AddSingleton(typeof(ICacheManagerConfiguration),
+                new CacheManager.Core.ConfigurationBuilder()
+                        .WithJsonSerializer()
+                        .WithMicrosoftMemoryCacheHandle()
+                        .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
+                        .Build());
+
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Latest)
-                .AddXmlSerializerFormatters();
+                    .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                    .AddXmlSerializerFormatters();
 
             services.AddCors();
 

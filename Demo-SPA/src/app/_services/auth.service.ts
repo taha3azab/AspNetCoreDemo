@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -9,7 +9,7 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
 
-  constructor(private https: Http) {}
+  constructor(private https: HttpClient) {}
 
   login(model: any) {
     return this.https.post(this.baseUrl + 'login', model).pipe(
