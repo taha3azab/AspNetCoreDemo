@@ -5,6 +5,7 @@ using CacheManager.Core;
 using Demo.API.Data;
 using Demo.API.Dtos;
 using Demo.API.Helpers;
+using EFSecondLevelCache.Core;
 using JWT.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
