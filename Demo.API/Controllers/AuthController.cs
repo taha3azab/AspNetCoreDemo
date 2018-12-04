@@ -74,8 +74,8 @@ namespace Demo.API.Controllers
             });
         }
 
-        [Authorize]
         [HttpPost("change_password")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(UserForChangePasswordDto userForChangePassword)
         {
             var user = await _authRepo.ChangePassword(userForChangePassword.Username, userForChangePassword.OldPassword, userForChangePassword.NewPassword);

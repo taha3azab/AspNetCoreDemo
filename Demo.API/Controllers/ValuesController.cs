@@ -26,12 +26,12 @@ namespace Demo.API.Controllers
         }
 
         // GET api/values
-        [HttpGet]
-        [ProducesResponseType(typeof(IPagedList<ValueDto>), StatusCodes.Status200OK)]
+        [HttpGet, HttpHead]
+        [ProducesResponseType(typeof(PagedListDto<ValueDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 20)
         {
             var values = await _unitOfWork.GetRepository<Value>()
-                                .GetPagedListAsync(null, null, null, pageIndex, pageSize);
+                                .GetPagedListAsync(null, q => q.OrderBy(v => v.Id), null, pageIndex, pageSize);
             return Ok(values?.Adapt<PagedListDto<ValueDto>>());
         }
 
@@ -42,10 +42,13 @@ namespace Demo.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var value = await _unitOfWork.GetRepository<Value>()
-                                        .GetFirstOrDefaultAsync(v => v, v => v.Id == id, x => x.OrderBy(v => v.Id));
+                                        .GetFirstOrDefaultAsync(
+                                            v => v.Adapt<ValueDto>(),
+                                            v => v.Id == id,
+                                            x => x.OrderBy(v => v.Id));
             if (value == null)
                 return NotFound();
-            return Ok(value.Adapt<ValueDto>());
+            return Ok(value);
         }
 
         // POST api/values
@@ -64,13 +67,13 @@ namespace Demo.API.Controllers
         // PUT api/values/5
         [HttpPut]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValueDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> Put(ValueDto value)
         {
             var dbValue = value?.Adapt<Value>();
             _unitOfWork.GetRepository<Value>().Update(dbValue);
             await _unitOfWork.SaveChangesAsync();
-            return Ok(dbValue);
+            return Ok(dbValue.Adapt<ValueDto>());
         }
 
         // DELETE api/values/5

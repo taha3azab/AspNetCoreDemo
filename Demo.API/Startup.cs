@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using CacheManager.Core;
@@ -14,7 +15,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +51,19 @@ namespace Demo.API
                         .WithMicrosoftMemoryCacheHandle()
                         .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
                         .Build());
-
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
+                // options.MimeTypes =
+                //     ResponseCompressionDefaults.MimeTypes.Concat(
+                //         new[] { "application/xml", "application/json", "image/svg+xml" });
+                options.EnableForHttps = true;
+            });
+            services.Configure<GzipCompressionProviderOptions>(options => 
+            {
+                options.Level = CompressionLevel.Fastest;
+            });
+            services.AddResponseCaching();
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Latest)
                     .AddXmlSerializerFormatters();
@@ -161,6 +176,22 @@ namespace Demo.API
                 c.SwaggerEndpoint("/swagger/v2.0/swagger.json", "Versioned Api v2.0");
             });
             app.UseAuthentication();
+            app.UseResponseCompression();
+            app.UseResponseCaching();
+            app.Use(async (context, next) =>
+            {
+                // For GetTypedHeaders, add: using Microsoft.AspNetCore.Http;
+                context.Response.GetTypedHeaders().CacheControl =
+                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(10)
+                    };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+                    new string[] { "Accept-Encoding" };
+
+                await next();
+            });
             app.UseMvc();
         }
     }
