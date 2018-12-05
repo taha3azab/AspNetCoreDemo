@@ -26,7 +26,7 @@ namespace Demo.API.Controllers
         }
 
         // GET api/values
-        [HttpGet, HttpHead]
+        [HttpGet]
         [ProducesResponseType(typeof(PagedListDto<ValueDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 20)
         {
@@ -42,10 +42,10 @@ namespace Demo.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var value = await _unitOfWork.GetRepository<Value>()
-                                        .GetFirstOrDefaultAsync(
-                                            v => v.Adapt<ValueDto>(),
-                                            v => v.Id == id,
-                                            x => x.OrderBy(v => v.Id));
+                                            .GetFirstOrDefaultAsync(
+                                                v => v.Adapt<ValueDto>(),
+                                                v => v.Id == id,
+                                                x => x.OrderBy(v => v.Id));
             if (value == null)
                 return NotFound();
             return Ok(value);
