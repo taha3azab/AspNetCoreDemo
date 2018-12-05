@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Demo.API
 {
@@ -63,7 +65,7 @@ namespace Demo.API
                 //         new[] { "application/xml", "application/json", "image/svg+xml" });
                 options.EnableForHttps = true;
             });
-            services.Configure<GzipCompressionProviderOptions>(options => 
+            services.Configure<GzipCompressionProviderOptions>(options =>
             {
                 options.Level = CompressionLevel.Fastest;
             });
@@ -129,6 +131,18 @@ namespace Demo.API
                 });
                 c.OperationFilter<ApiVersionOperationFilter>();
                 c.OperationFilter<AddAuthTokenHeaderParameter>();
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                c.AddSecurityRequirement(security);
             });
 
         }
@@ -175,6 +189,7 @@ namespace Demo.API
                 c.DisplayRequestDuration();
                 c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned Api v1.0");
                 c.SwaggerEndpoint("/swagger/v2.0/swagger.json", "Versioned Api v2.0");
+                c.DocExpansion(DocExpansion.None);
             });
             app.UseAuthentication();
             app.UseResponseCompression();
