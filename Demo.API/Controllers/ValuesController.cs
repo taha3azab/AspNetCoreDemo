@@ -80,8 +80,12 @@ namespace Demo.API.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            _unitOfWork.GetRepository<Value>().Delete(id);
-            await _unitOfWork.SaveChangesAsync();
+            var valueIsExist = _unitOfWork.GetRepository<Value>().Count(v => v.Id == id) > 0;
+            if (valueIsExist)
+            {
+                _unitOfWork.GetRepository<Value>().Delete(id);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
     }
 }
