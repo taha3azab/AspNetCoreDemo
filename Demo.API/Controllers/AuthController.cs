@@ -45,7 +45,6 @@ namespace Demo.API.Controllers
             };
             var createdUser = await _authService.Register(userToCreate, userForRegister.Password);
             return StatusCode(StatusCodes.Status201Created);
-            //return CreatedAtRoute("", createdUser);
         }
 
         [HttpPost("login")]

@@ -1,7 +1,6 @@
 using Demo.API.Models;
 using EFSecondLevelCache.Core;
 using EFSecondLevelCache.Core.Contracts;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -13,7 +12,8 @@ namespace Demo.API.Data
 
         public DbSet<Value> Values { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Photo> Photos { get; set; }
+        
         public override int SaveChanges()
         {
             this.ChangeTracker.DetectChanges();

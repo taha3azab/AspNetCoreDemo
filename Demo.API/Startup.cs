@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using CacheManager.Core;
 using Demo.API.Data;
+using Demo.API.Dtos;
 using Demo.API.Helpers;
+using Demo.API.Models;
 using EFSecondLevelCache.Core;
+using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -72,10 +75,14 @@ namespace Demo.API
             services.AddResponseCaching();
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Latest)
-                    .AddXmlSerializerFormatters();
+                    .AddXmlSerializerFormatters()
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    });
 
             services.AddCors();
-
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddAuthentication(x =>
             {
@@ -148,7 +155,7 @@ namespace Demo.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             app.UseStaticFiles();
             if (env.IsDevelopment())
@@ -173,7 +180,7 @@ namespace Demo.API
 
                 app.UseHsts();
             }
-
+            seeder.SeedUsers();
             app.UseHttpsRedirection();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -208,6 +215,13 @@ namespace Demo.API
 
                 await next();
             });
+
+            TypeAdapterConfig<User, UserForListDto>.NewConfig()
+                            .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
+                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
+            TypeAdapterConfig<User, UserForDetailedDto>.NewConfig()
+                            .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
+                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
             app.UseMvc();
         }
     }
