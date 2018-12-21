@@ -5,9 +5,12 @@ import { MemberListComponent } from './member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { ValuesComponent } from './values/values.component';
+import { RegisterComponent } from './register/register.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -15,7 +18,8 @@ export const appRoutes: Routes = [
     children: [
       { path: 'members', component: MemberListComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'lists', component: ListsComponent }
+      { path: 'lists', component: ListsComponent },
+      { path: 'values', component: ValuesComponent }
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }

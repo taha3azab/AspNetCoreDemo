@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-
+import { AngularPerfModule, RoutingService } from '@microsoft/mezzurite-angular';
 import { BsDropdownModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -16,11 +16,13 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 
 
-import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
 import { WebService } from './_services/web.service';
 import { AuthService } from './_services/auth.service';
 import { AlertifyService } from './_services/alertify.service';
 import { AuthGuard } from './_guards/auth.guard';
+import { JwtModule } from '@auth0/angular-jwt';
+
 
 @NgModule({
   declarations: [
@@ -35,10 +37,20 @@ import { AuthGuard } from './_guards/auth.guard';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot()
+    AngularPerfModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    JwtModule.forRoot({ // https://github.com/auth0/angular2-jwt
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+        whitelistedDomains: ['localhost:5001'],
+        blacklistedRoutes: ['localhost:5001/api/auth/']
+      }
+    })
   ],
   providers: [
     ErrorInterceptorProvider,
@@ -49,4 +61,8 @@ import { AuthGuard } from './_guards/auth.guard';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private router: RoutingService) {
+    router.start();
+  }
+}

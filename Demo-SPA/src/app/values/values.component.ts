@@ -13,6 +13,7 @@ export class ValuesComponent implements OnInit {
 
   async ngOnInit() {
     const response = await this.webService.getValues();
-    this.values = response.json();
+    console.log(response);
+    this.values = response.items;
   }
 }

@@ -1,4 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+<nav
+  class="navbar navbar-expand-md navbar-dark bg-primary"
+  mezzurite
+  component-title="NavComponent"
+>
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/home']">Demo App</a>
 
@@ -11,6 +15,9 @@
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['/messages']">Messages</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/values']">Values</a>
       </li>
     </ul>
 
@@ -58,6 +65,9 @@
       >
         Login
       </button>
+      <a class="btn btn-primary my-2 my-sm-0" [routerLink]="['/register']"
+        >Register</a
+      >
     </form>
   </div>
 </nav>

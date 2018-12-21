@@ -13,11 +13,10 @@ export class AuthService {
 
   login(model: any) {
     return this.https.post(this.baseUrl + 'login', model).pipe(
-      map((response: any) => {
-        const user = response.json();
-        if (user) {
-          localStorage.setItem('token', user.token);
-          this.decodedToken = this.jwtHelper.decodeToken(user.token);
+      map((response: TokenResponse) => {
+        if (response) {
+          localStorage.setItem('token', response.token);
+          this.decodedToken = this.jwtHelper.decodeToken(response.token);
           console.log(this.decodedToken);
         }
       })
@@ -36,4 +35,8 @@ export class AuthService {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }
+}
+
+export interface TokenResponse {
+  token: string;
 }
