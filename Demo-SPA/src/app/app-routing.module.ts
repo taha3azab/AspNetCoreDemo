@@ -7,6 +7,7 @@ import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { ValuesComponent } from './values/values.component';
 import { RegisterComponent } from './register/register.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +20,8 @@ export const appRoutes: Routes = [
       { path: 'members', component: MemberListComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'lists', component: ListsComponent },
-      { path: 'values', component: ValuesComponent }
+      { path: 'values', component: ValuesComponent },
+      { path: 'contact', component: ContactFormComponent }
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }

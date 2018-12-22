@@ -23,7 +23,7 @@ export class AuthService {
     );
   }
 
-  register(model: any) {
+  signup(model: any) {
     return this.https.post(this.baseUrl + 'register', model);
   }
 
@@ -34,6 +34,10 @@ export class AuthService {
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  userIsExist(username: string) {
+    return this.https.get(this.baseUrl, { username: username } as any);
   }
 }
 
