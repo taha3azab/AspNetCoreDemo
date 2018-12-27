@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsernameValidators } from '../shared/validators/username.validators';
 import { AuthService } from '../_services/auth.service';
+import { UserForRegister } from '../shared/models/user-for-register.model';
 
 @Component({
   selector: 'signup-form',
@@ -17,25 +18,28 @@ export class SignupFormComponent {
         Validators.minLength(3),
         UsernameValidators.cannotContaineSpace
       ],
-      UsernameValidators.shouldBeUnique
+      [UsernameValidators.shouldBeUnique(this.authService)]  // async validators
     ),
-    password: new FormControl('', Validators.required)
+    password: new FormControl('', [Validators.required])
   });
 
   constructor(private authService: AuthService) {}
 
   signup() {
-    this.authService.signup(this.form.value).subscribe(
-      () => {},
-      error => {
-        this.form.setErrors({
-          invalidSignup: {
-            errorMessage: error
-          }
-        });
-      },
-      () => {}
-    );
+    if (this.form.valid) {
+      const user = this.form.value as UserForRegister;
+      this.authService.signup(user).subscribe(
+        () => {},
+        error => {
+          this.form.setErrors({
+            invalidSignup: {
+              errorMessage: error
+            }
+          });
+        },
+        () => {}
+      );
+    }
   }
 
   get username() {

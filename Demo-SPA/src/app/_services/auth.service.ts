@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+
 import { JwtHelperService } from '@auth0/angular-jwt';
+import 'rxjs/add/operator/delay';
+import { map } from 'rxjs/operators/map';
+import { UserForRegister } from '../shared/models/user-for-register.model';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +26,8 @@ export class AuthService {
     );
   }
 
-  signup(model: any) {
-    return this.https.post(this.baseUrl + 'register', model);
+  signup(model: UserForRegister) {
+    return this.https.post<UserForRegister>(this.baseUrl + 'register', model);
   }
 
   changePassword(model: any) {
@@ -37,7 +40,9 @@ export class AuthService {
   }
 
   userIsExist(username: string) {
-    return this.https.get(this.baseUrl, { username: username } as any);
+    return this.https.get<Boolean>(this.baseUrl + 'user_is_exist', {
+      params: { username: username }
+    });
   }
 }
 

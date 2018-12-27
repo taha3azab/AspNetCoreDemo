@@ -86,5 +86,12 @@ namespace Demo.API.Controllers
                 return Unauthorized();
             return StatusCode(StatusCodes.Status202Accepted);
         }
+
+        [HttpGet("user_is_exist")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UserIsExist(string username){
+            var status = await _authService.UserExists(username);
+            return Ok(status);
+        }
     }
 }

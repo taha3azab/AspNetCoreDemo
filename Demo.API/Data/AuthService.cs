@@ -39,7 +39,7 @@ namespace Demo.API.Data
         }
         public async Task<bool> UserExists(string username)
         {
-            return await Task.Run(() => _unitOfWork.GetRepository<User>().Count(u => u.Username == username) > 0);
+            return await Task.Run(() => _unitOfWork.GetRepository<User>().Count(u => u.Username.ToLower() == username.ToLower()) > 0);
         }
         public async Task<User> ChangePassword(string username, string oldPassword, string newPassword)
         {
