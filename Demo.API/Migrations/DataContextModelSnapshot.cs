@@ -67,9 +67,12 @@ namespace Demo.API.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Username");
 
                     b.ToTable("Users");
                 });

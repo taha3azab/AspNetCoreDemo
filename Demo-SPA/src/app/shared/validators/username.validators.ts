@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/timer';
+// import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 export class UsernameValidators {
 
@@ -17,6 +18,9 @@ export class UsernameValidators {
   static shouldBeUnique(auth: AuthService) {
     return (control: AbstractControl): | Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       const debounceTime = 500; // milliseconds
+      // debounceTime(500),
+      // distinctUntilChanged(),
+      // switchMap(
       return Observable.timer(debounceTime).switchMap(() => {
         return auth.userIsExist(control.value).map(isExist => {
           return isExist ? { shouldBeUnique: isExist } : null;

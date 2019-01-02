@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/observable/throw';
 import { map } from 'rxjs/operators/map';
 import { UserForRegister } from '../shared/models/user-for-register.model';
+import { Observable } from 'rxjs';
+import { BadInput } from '../common/bad-input';
+import { AppError } from '../common/app-error';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +31,14 @@ export class AuthService {
   }
 
   signup(model: UserForRegister) {
-    return this.https.post<UserForRegister>(this.baseUrl + 'register', model);
+    return this.https
+      .post<UserForRegister>(this.baseUrl + 'register', model)
+      .catch((error: Response) => {
+        if (error.status === 400) {
+          return Observable.throw(new BadInput(error.json()));
+        }
+        return Observable.throw(new AppError(error.json()));
+      });
   }
 
   changePassword(model: any) {
@@ -41,7 +52,13 @@ export class AuthService {
 
   userIsExist(username: string) {
     return this.https.get<Boolean>(this.baseUrl + 'user_is_exist', {
-      params: { username: username }
+      params: { username: username },
+      headers: new HttpHeaders({
+        // 'Cache-control': 'no-cache',
+        'Cache-control': 'no-store',
+        Expires: '0',
+        Pragma: 'no-cache'
+      })
     });
   }
 }

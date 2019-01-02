@@ -14,6 +14,8 @@ namespace Demo.API.Helpers
 
         public static int CalculateAge(this DateTime dateTime)
         {
+            if (dateTime == null)
+                return 0;
             var age = DateTime.Today.Year - dateTime.Year;
             if (dateTime.AddYears(age).Year > DateTime.Today.Year)
                 age--;

@@ -41,6 +41,8 @@ namespace Demo.API.Controllers
                                                                                         u => u.Id == id,
                                                                                         q => q.OrderBy(u => u.Id),
                                                                                         q => q.Include(u => u.Photos));
+            if (user == null)
+                return NotFound();
             return Ok(user);
         }
     }

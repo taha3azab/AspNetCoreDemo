@@ -10,7 +10,7 @@ namespace Demo.API.Tests
         [Fact]
         public void x()
         {
-            var unitOfWorkMoq = new Moq<IUnitOfWork>();
+            // var unitOfWorkMoq = new Moq<IUnitOfWork>();
             //unitOfWorkMoq.Setup(p=>p)
             Assert.Equal(2, 2);
         }

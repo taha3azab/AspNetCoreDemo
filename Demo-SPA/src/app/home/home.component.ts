@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WebService } from '../_services/web.service';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +8,7 @@ import { WebService } from '../_services/web.service';
 export class HomeComponent implements OnInit {
   registerMode = false;
 
-  constructor(private webService: WebService) {}
+  constructor() {}
 
   async ngOnInit() {}
   registerToggle() {

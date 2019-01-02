@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20181208215203_ExtendedUserClass")]
-    partial class ExtendedUserClass
+    [Migration("20181228202535_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,9 +69,12 @@ namespace Demo.API.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Username");
 
                     b.ToTable("Users");
                 });

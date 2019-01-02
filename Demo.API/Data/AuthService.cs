@@ -72,14 +72,9 @@ namespace Demo.API.Data
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                // if (computedHash.Length != passwordHash.Length)
-                //         return false;
-                // for (int i = 0; i < computedHash.Length; i++)
-                // {
-                //     if (computedHash[i] != passwordHash[i])
-                //         return false;
-                // }
-                return computedHash != null && passwordHash != null && computedHash.SequenceEqual(passwordHash);
+                return computedHash != null && 
+                        passwordHash != null && 
+                        computedHash.SequenceEqual(passwordHash);
             }
         }
     }

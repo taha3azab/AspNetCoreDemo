@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsernameValidators } from '../shared/validators/username.validators';
 import { AuthService } from '../_services/auth.service';
 import { UserForRegister } from '../shared/models/user-for-register.model';
+import { AppError } from '../common/app-error';
 
 @Component({
   selector: 'signup-form',
@@ -29,15 +30,16 @@ export class SignupFormComponent {
     if (this.form.valid) {
       const user = this.form.value as UserForRegister;
       this.authService.signup(user).subscribe(
-        () => {},
-        error => {
+        (response) => {
+
+        },
+        (error: AppError) => {
           this.form.setErrors({
             invalidSignup: {
-              errorMessage: error
+              errorMessage: error.originalError
             }
           });
-        },
-        () => {}
+        }
       );
     }
   }

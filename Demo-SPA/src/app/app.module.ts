@@ -19,13 +19,17 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 
 import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
-import { WebService } from './_services/web.service';
 import { AuthService } from './_services/auth.service';
 import { AlertifyService } from './_services/alertify.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
+import { LoggingInterceptor, LoggingInterceptorProvider } from './_interceptors/logging-interceptor';
+import { AppErrorHandler, AppErrorHandlerProvider } from './common/app-error-handler';
+import { ValueService } from './_services/value.service';
+import { UsersComponent } from './users/users.component';
+import { UsersService } from './_services/users.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,8 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
     ListsComponent,
     MessagesComponent,
     ContactFormComponent,
-    SignupFormComponent
+    SignupFormComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -61,10 +66,13 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
   ],
   providers: [
     ErrorInterceptorProvider,
-    WebService,
+    LoggingInterceptorProvider,
+    ValueService,
+    UsersService,
     AuthService,
     AlertifyService,
-    AuthGuard
+    AuthGuard,
+    AppErrorHandlerProvider
   ],
   bootstrap: [AppComponent]
 })

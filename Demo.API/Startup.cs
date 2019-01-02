@@ -50,7 +50,7 @@ namespace Demo.API
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
                     .AddUnitOfWork<DataContext>();
 
-            services.AddEFSecondLevelCache();
+            //services.AddEFSecondLevelCache();
 
             // Add an in-memory cache service provider
             services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
@@ -180,7 +180,7 @@ namespace Demo.API
 
                 app.UseHsts();
             }
-            seeder.SeedUsers();
+            // seeder.SeedUsers();
             app.UseHttpsRedirection();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -216,12 +216,20 @@ namespace Demo.API
                 await next();
             });
 
-            TypeAdapterConfig<User, UserForListDto>.NewConfig()
+            TypeAdapterConfig<User, UserForListDto>
+                            .NewConfig()
+                            .IgnoreNullValues(true)
+                            .AvoidInlineMapping(true)
                             .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
-                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
-            TypeAdapterConfig<User, UserForDetailedDto>.NewConfig()
+                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
+                            .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
+            TypeAdapterConfig<User, UserForDetailedDto>
+                            .NewConfig()
+                            .IgnoreNullValues(true)
+                            .AvoidInlineMapping(true)
                             .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
-                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
+                            .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
+                            .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
             app.UseMvc();
         }
     }

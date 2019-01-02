@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WebService } from '../_services/web.service';
+import { ValueService } from '../_services/value.service';
 import { Value } from '../shared/models/value.model';
 
 @Component({
@@ -9,11 +9,10 @@ import { Value } from '../shared/models/value.model';
 })
 export class ValuesComponent implements OnInit {
   values: Value[];
-  constructor(private webService: WebService) {}
+  constructor(private valueService: ValueService) {}
 
   async ngOnInit() {
-    const response = await this.webService.getValues();
-    console.log(response);
+    const response = await this.valueService.getAll();
     this.values = response.items;
   }
 }

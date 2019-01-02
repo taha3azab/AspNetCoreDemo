@@ -25,5 +25,13 @@ namespace Demo.API.Data
 
             return result;
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasAlternateKey(u=>u.Username);
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }
