@@ -1,4 +1,3 @@
-using System.Linq;
 using Demo.API.Models;
 using EFSecondLevelCache.Core;
 using EFSecondLevelCache.Core.Contracts;

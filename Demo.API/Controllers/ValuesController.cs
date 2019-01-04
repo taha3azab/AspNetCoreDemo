@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Demo.API.Dtos;
+﻿using Demo.API.Dtos;
 using Demo.API.Models;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Mapster;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
@@ -26,7 +26,7 @@ namespace Demo.API.Controllers
         }
 
         // GET api/values
-        [HttpGet]
+        [HttpGet()]
         [ProducesResponseType(typeof(PagedListDto<ValueDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 20)
         {

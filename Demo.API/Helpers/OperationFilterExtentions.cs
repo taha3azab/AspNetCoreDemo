@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Demo.API.Helpers
 {
-   
+
     public class ApiVersionOperationFilter : IOperationFilter
     {
         public void Apply(Operation operation, OperationFilterContext context)

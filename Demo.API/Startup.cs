@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using CacheManager.Core;
+﻿using CacheManager.Core;
 using Demo.API.Data;
 using Demo.API.Dtos;
 using Demo.API.Helpers;
 using Demo.API.Models;
-using EFSecondLevelCache.Core;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +18,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.Collections.Generic;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
 
 namespace Demo.API
 {
@@ -129,12 +128,9 @@ namespace Demo.API
                     {
                         return true;
                     }
-                    if (actionApiVersionModel.DeclaredApiVersions.Any())
-                    {
-                        return actionApiVersionModel.DeclaredApiVersions.Any(v => $"v{v.ToString()}" == docName);
-                    }
-                    return actionApiVersionModel.ImplementedApiVersions.Any(v => $"v{v.ToString()}" == docName);
-
+                    return actionApiVersionModel.DeclaredApiVersions.Any() ? 
+                        actionApiVersionModel.DeclaredApiVersions.Any(v => $"v{v.ToString()}" == docName) : 
+                        actionApiVersionModel.ImplementedApiVersions.Any(v => $"v{v.ToString()}" == docName);
                 });
                 c.OperationFilter<ApiVersionOperationFilter>();
                 c.OperationFilter<AddAuthTokenHeaderParameter>();
@@ -211,7 +207,7 @@ namespace Demo.API
                         MaxAge = TimeSpan.FromSeconds(10)
                     };
                 context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
-                    new string[] { "Accept-Encoding" };
+                    new[] { "Accept-Encoding" };
 
                 await next();
             });

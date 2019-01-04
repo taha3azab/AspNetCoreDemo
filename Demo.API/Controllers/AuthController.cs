@@ -1,25 +1,19 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Demo.API.Data;
 using Demo.API.Dtos;
-using Demo.API.Helpers;
 using Demo.API.Models;
-using JWT;
 using JWT.Algorithms;
 using JWT.Builder;
-using JWT.Serializers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
-    [ApiVersion("2.0")]
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

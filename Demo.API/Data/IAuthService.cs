@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Demo.API.Models;
+using System.Threading.Tasks;
 
 namespace Demo.API.Data
 {

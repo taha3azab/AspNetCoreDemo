@@ -1,7 +1,7 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Demo.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Demo.API.Data
 {
@@ -20,15 +20,11 @@ namespace Demo.API.Data
             if (user == null)
                 return null;
 
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
-
-            return user;
+            return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
         }
         public async Task<User> Register(User user, string password)
         {
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
@@ -47,8 +43,7 @@ namespace Demo.API.Data
             if (user == null)
                 return null;
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
+            CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
@@ -72,8 +67,7 @@ namespace Demo.API.Data
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash != null && 
-                        passwordHash != null && 
+                return passwordHash != null && 
                         computedHash.SequenceEqual(passwordHash);
             }
         }

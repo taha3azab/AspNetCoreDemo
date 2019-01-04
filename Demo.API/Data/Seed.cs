@@ -1,35 +1,36 @@
-using System.Collections.Generic;
-using Demo.API.Data;
 using Demo.API.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo.API.Data
 {
     public class Seed
     {
-        private readonly DataContext _context;
-        public Seed(DataContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public Seed(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        public void SeedUsers() 
+        public async Task SeedUsers()
         {
-            var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
+            var userData = await System.IO.File.ReadAllTextAsync("Data/UserSeedData.json");
             var users = JsonConvert.DeserializeObject<List<User>>(userData);
             foreach (var user in users)
             {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash("password", out passwordHash, out passwordSalt);
+                CreatePasswordHash("password", out var passwordHash, out var passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 user.Username = user.Username.ToLower();
 
-                _context.Users.Add(user);
+                await _unitOfWork.GetRepository<User>().InsertAsync(user);
+
             }
 
-            _context.SaveChanges();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -38,7 +39,7 @@ namespace Demo.API.Data
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            } 
+            }
         }
     }
 }
