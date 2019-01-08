@@ -12,7 +12,7 @@ export class UsersComponent implements OnInit {
   constructor(private usersService: UsersService) {}
 
   async ngOnInit() {
-    const response = await this.usersService.getAll();
-    this.users = response.items;
+    const pagedList = await this.usersService.getAll();
+    this.users = pagedList.items;
   }
 }

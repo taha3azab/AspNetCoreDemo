@@ -6,7 +6,7 @@ import { UserForRegister } from '../shared/models/user-for-register.model';
 import { AppError } from '../common/app-error';
 
 @Component({
-  selector: 'signup-form',
+  selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.css']
 })
@@ -31,7 +31,6 @@ export class SignupFormComponent {
       const user = this.form.value as UserForRegister;
       this.authService.signup(user).subscribe(
         (response) => {
-
         },
         (error: AppError) => {
           this.form.setErrors({

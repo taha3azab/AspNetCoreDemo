@@ -9,6 +9,7 @@ import { UserForRegister } from '../shared/models/user-for-register.model';
 import { Observable } from 'rxjs';
 import { BadInput } from '../common/bad-input';
 import { AppError } from '../common/app-error';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Injectable()
 export class AuthService {
@@ -16,15 +17,15 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
 
-  constructor(private https: HttpClient) {}
+  constructor(private https: HttpClient, private storage: LocalStorageService) {}
 
   login(model: any) {
     return this.https.post(this.baseUrl + 'login', model).pipe(
       map((response: TokenResponse) => {
         if (response) {
-          localStorage.setItem('token', response.token);
-          this.decodedToken = this.jwtHelper.decodeToken(response.token);
-          console.log(this.decodedToken);
+          this.storage.store('token', response.token);
+          // this.decodedToken = this.jwtHelper.decodeToken(response.token);
+          // console.log(this.decodedToken);
         }
       })
     );
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   loggedIn() {
-    const token = localStorage.getItem('token');
+    const token = this.storage.retrieve('token');
     return !this.jwtHelper.isTokenExpired(token);
   }
 

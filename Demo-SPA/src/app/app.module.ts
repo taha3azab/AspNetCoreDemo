@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {NgxWebstorageModule, LocalStorageService, LOCAL_STORAGE} from 'ngx-webstorage';
+import { NgModule, Injector } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -53,11 +54,14 @@ import { UsersService } from './_services/users.service';
     AppRoutingModule,
     AngularPerfModule.forRoot(),
     BsDropdownModule.forRoot(),
+    NgxWebstorageModule.forRoot({ prefix: 'demo', separator: '.', caseSensitive: true }) ,
     JwtModule.forRoot({
       // https://github.com/auth0/angular2-jwt
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('token');
+          let storage = new LocalStorageService();
+          return storage.retrieve('token');
+          // return localStorage.getItem('token');
         },
         blacklistedRoutes: [new RegExp('\/api\/auth')],
         whitelistedDomains: ['localhost:5001']

@@ -1,4 +1,7 @@
-
 <ul class="list-group">
-  <li class="list-group-item" *ngFor="let user of users">{{ user.username | titlecase }} <span>{{ user.lastActive | date }}</span></li>
+  <li class="list-group-item" *ngFor="let user of users">
+    <img [src]="user.photoUrl" />
+    <p>{{ user.username | titlecase }}</p>
+    <p>{{ user.lastActive | date }}</p>
+  </li>
 </ul>

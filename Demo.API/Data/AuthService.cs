@@ -12,6 +12,7 @@ namespace Demo.API.Data
         {
             _unitOfWork = unitOfWork;
         }
+
         public async Task<User> Login(string username, string password)
         {
             var user = await _unitOfWork.GetRepository<User>()
@@ -22,6 +23,7 @@ namespace Demo.API.Data
 
             return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
         }
+
         public async Task<User> Register(User user, string password)
         {
             CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
@@ -33,10 +35,12 @@ namespace Demo.API.Data
 
             return user;
         }
+
         public async Task<bool> UserExists(string username)
         {
             return await Task.Run(() => _unitOfWork.GetRepository<User>().Count(u => u.Username.ToLower() == username.ToLower()) > 0);
         }
+
         public async Task<User> ChangePassword(string username, string oldPassword, string newPassword)
         {
             var user = await Login(username, oldPassword);
@@ -62,6 +66,7 @@ namespace Demo.API.Data
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
