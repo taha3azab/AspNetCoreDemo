@@ -100,6 +100,7 @@ namespace Demo.API
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+                options.Authority = "https://localhost:5003";
             });
 
             // Add API Versioning
@@ -226,6 +227,7 @@ namespace Demo.API
                             .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
                             .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
                             .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
+            
             app.UseMvc();
         }
     }

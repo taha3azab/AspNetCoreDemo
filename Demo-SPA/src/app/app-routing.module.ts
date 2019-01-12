@@ -8,6 +8,8 @@ import { AuthGuard } from './_guards/auth.guard';
 import { ValuesComponent } from './values/values.component';
 import { RegisterComponent } from './register/register.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { UsersComponent } from './users/users.component';
+import { UserComponent } from './user/user.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,7 +19,8 @@ export const appRoutes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      { path: 'members', component: MemberListComponent },
+      { path: 'users/:id?', component: UserComponent },
+      { path: 'users', component: UsersComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'lists', component: ListsComponent },
       { path: 'values', component: ValuesComponent },

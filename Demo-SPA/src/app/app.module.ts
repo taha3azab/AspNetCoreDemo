@@ -1,5 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgxWebstorageModule, LocalStorageService, LOCAL_STORAGE} from 'ngx-webstorage';
+import {
+  NgxWebstorageModule,
+  LocalStorageService,
+  LOCAL_STORAGE
+} from 'ngx-webstorage';
 import { NgModule, Injector } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,11 +30,19 @@ import { AuthGuard } from './_guards/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
-import { LoggingInterceptor, LoggingInterceptorProvider } from './_interceptors/logging-interceptor';
-import { AppErrorHandler, AppErrorHandlerProvider } from './common/app-error-handler';
+import {
+  LoggingInterceptor,
+  LoggingInterceptorProvider
+} from './_interceptors/logging-interceptor';
+import {
+  AppErrorHandler,
+  AppErrorHandlerProvider
+} from './common/app-error-handler';
 import { ValueService } from './_services/value.service';
 import { UsersComponent } from './users/users.component';
 import { UsersService } from './_services/users.service';
+import { MemberComponent } from './member/member.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +56,9 @@ import { UsersService } from './_services/users.service';
     MessagesComponent,
     ContactFormComponent,
     SignupFormComponent,
-    UsersComponent
+    UsersComponent,
+    MemberComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -54,16 +68,19 @@ import { UsersService } from './_services/users.service';
     AppRoutingModule,
     AngularPerfModule.forRoot(),
     BsDropdownModule.forRoot(),
-    NgxWebstorageModule.forRoot({ prefix: 'demo', separator: '.', caseSensitive: true }) ,
+    NgxWebstorageModule.forRoot({
+      prefix: 'demo',
+      separator: '.',
+      caseSensitive: true
+    }),
     JwtModule.forRoot({
       // https://github.com/auth0/angular2-jwt
       config: {
         tokenGetter: () => {
-          let storage = new LocalStorageService();
-          return storage.retrieve('token');
-          // return localStorage.getItem('token');
+          // return  storage.retrieve('token');
+          return localStorage.getItem('token');
         },
-        blacklistedRoutes: [new RegExp('\/api\/auth')],
+        blacklistedRoutes: [new RegExp('/api/auth')],
         whitelistedDomains: ['localhost:5001']
       }
     })

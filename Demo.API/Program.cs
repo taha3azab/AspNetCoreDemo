@@ -27,6 +27,7 @@ namespace Demo.API
                 {
                     options.AddServerHeader = false;
                     options.Limits.MaxConcurrentConnections = 100;
+                    
                 });
     }
 }

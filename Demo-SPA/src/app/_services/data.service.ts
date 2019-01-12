@@ -7,24 +7,30 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/retry';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { PagedList } from '../shared/interfaces/paged-list.interface';
 
 @Injectable()
 export class DataService<T> {
   constructor(private url: string, private https: HttpClient) {}
 
-  getAll() {
+  getAll(pageIndex: number, pageSize: number) {
+    pageIndex = pageIndex || 0;
+    pageSize = pageSize || 10;
+    const params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString());
+
     return this.https
-      .get<PagedList<T>>(this.url)
+      .get<PagedList<T>>(this.url, { params })
       .retry(3)
       .catch(this.handleError)
       .toPromise();
   }
-  
+
   getById(id: string) {
     return this.https
-      .get<T>(this.url + '/' + id)
+      .get<T>(this.url + id)
       .catch(this.handleError)
       .toPromise();
   }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Demo.API.Controllers
 {
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

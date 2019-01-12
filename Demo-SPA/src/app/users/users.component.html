@@ -1,7 +1,9 @@
 <ul class="list-group">
   <li class="list-group-item" *ngFor="let user of users">
-    <img [src]="user.photoUrl" />
-    <p>{{ user.username | titlecase }}</p>
-    <p>{{ user.lastActive | date }}</p>
+    <a class="nav-link" [routerLink]="['/users', user.id]">
+      <img [src]="user.photoUrl" />
+      <p>{{ user.username | titlecase }}</p>
+      <p>{{ user.lastActive | date }}</p>
+    </a>
   </li>
 </ul>
