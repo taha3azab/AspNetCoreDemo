@@ -9133,11 +9133,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
+      "projectUniqueName": "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
       "projectName": "Demo.ApiGateway",
-      "projectPath": "e:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
+      "projectPath": "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
       "packagesPath": "C:\\Users\\Taha\\.nuget\\packages\\",
-      "outputPath": "e:\\Projects\\Demo\\Demo.ApiGateway\\obj\\",
+      "outputPath": "E:\\Projects\\Demo\\Demo.ApiGateway\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -9201,16 +9201,10 @@
           }
         },
         "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48"
+          "net461"
         ],
         "assetTargetFallback": true,
-        "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+        "warn": true
       }
     }
   }
