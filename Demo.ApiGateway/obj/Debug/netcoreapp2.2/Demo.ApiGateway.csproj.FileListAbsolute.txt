@@ -9,3 +9,14 @@ E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.Assembl
 E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.dll
 E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
 E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csproj.CoreCompileInputs.cache
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.deps.json
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.runtimeconfig.json
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.runtimeconfig.dev.json
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.dll
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csprojAssemblyReference.cache
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csproj.CoreCompileInputs.cache
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfoInputs.cache
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfo.cs
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.dll
+D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.pdb

@@ -1,0 +1,14 @@
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.csprojAssemblyReference.cache
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.csproj.CoreCompileInputs.cache
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.AssemblyInfoInputs.cache
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.AssemblyInfo.cs
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.RazorAssemblyInfo.cache
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.RazorAssemblyInfo.cs
+D:\Course\Demo\Demo.GraphQLService\bin\Debug\netcoreapp2.2\Demo.GraphQLService.deps.json
+D:\Course\Demo\Demo.GraphQLService\bin\Debug\netcoreapp2.2\Demo.GraphQLService.runtimeconfig.json
+D:\Course\Demo\Demo.GraphQLService\bin\Debug\netcoreapp2.2\Demo.GraphQLService.runtimeconfig.dev.json
+D:\Course\Demo\Demo.GraphQLService\bin\Debug\netcoreapp2.2\Demo.GraphQLService.dll
+D:\Course\Demo\Demo.GraphQLService\bin\Debug\netcoreapp2.2\Demo.GraphQLService.pdb
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.RazorTargetAssemblyInfo.cache
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.dll
+D:\Course\Demo\Demo.GraphQLService\obj\Debug\netcoreapp2.2\Demo.GraphQLService.pdb
