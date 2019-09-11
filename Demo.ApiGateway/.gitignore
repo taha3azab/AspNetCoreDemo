@@ -1,1 +1,5 @@
 ocelot_log.txt
+.vscode
+bin
+obj
+*.db
