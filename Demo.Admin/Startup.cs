@@ -1,8 +1,4 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using IdentityServer4;
+﻿using IdentityServer4;
 using Demo.Admin.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,7 +51,6 @@ namespace Demo.Admin
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
-                options.st
             })
                 .AddAspNetIdentity<ApplicationUser>()
                 // this adds the config data from DB (clients, resources, CORS)
@@ -92,10 +87,37 @@ namespace Demo.Admin
                     // register your IdentityServer with Google at https://console.developers.google.com
                     // enable the Google+ API
                     // set the redirect URI to http://localhost:5000/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = Configuration["Secret:GoogleClientId"];
+                    options.ClientSecret = Configuration["Secret:GoogleClientSecret"];
                 })
-                ;
+                .AddOpenIdConnect("aad", "Sign-in with Azure AD", options =>
+                {
+                    options.Authority = "https://login.microsoftonline.com/common";
+                    options.ClientId = "https://leastprivilegelabs.onmicrosoft.com/38196330-e766-4051-ad10-14596c7e97d3";
+
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+
+                    options.ResponseType = "id_token";
+                    options.CallbackPath = "/signin-aad";
+                    options.SignedOutCallbackPath = "/signout-callback-aad";
+                    options.RemoteSignOutPath = "/signout-aad";
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidAudience = "165b99fd-195f-4d93-a111-3e679246e6a9",
+
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
+                })
+                .AddLocalApi(options =>
+                {
+                    options.ExpectedScope = "api";
+                });
 
             services.UseAdminUI();
             services.AddScoped<IdentityExpressDbContext, SqliteIdentityDbContext>();
