@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
-
+using Demo.API.Services;
 namespace Demo.API.Controllers
 {
     [ApiVersion("2.0")]

@@ -1,0 +1,36 @@
+version: '3.5' # We use version 3.5 syntax
+services: # Here we define our service(s)
+    demo-spa: # The name of the service
+      container_name: demo-spa  # Container name
+      build: './Demo-SPA' # Location of our Dockerfile
+      volumes: # Volume binding
+        - './Demo-SPA:/usr/src/app'
+      ports:
+        - '8080:4200' # Port mapping
+      depends_on:
+        - demo-gateway
+      networks:
+        - demo-public-net
+        
+    demo-gateway:
+      container_name: demo-gateway
+      build: './Demo.ApiGateway'
+      ports:
+        - '7000:80'
+      networks:
+        - demo-public-net
+        - demo-private-net
+
+    demo-api:
+      container_name: demo-api
+      build: './Demo.API'
+      ports: 
+        - '5000:80'
+      networks:
+        - demo-private-net
+        
+networks:
+    demo-public-net:
+        driver: bridge
+    demo-private-net:
+        driver: bridge  

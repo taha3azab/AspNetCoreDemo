@@ -1,26 +1,24 @@
-FROM microsoft/dotnet:2.1-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
+EXPOSE 80
+#EXPOSE 443
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build-env
+WORKDIR /src
+COPY ./Demo.API.csproj Demo.API/
+RUN dotnet restore Demo.API/Demo.API.csproj
+COPY . ./Demo.API/
+WORKDIR /src/Demo.API
+RUN dotnet build Demo.API.csproj -c Release -o /app
 
 
-
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
+FROM build-env AS publish
+RUN dotnet publish Demo.API.csproj -c Release -o /app
 # Copy the created database
-RUN cp ./Demo.db ./out/Demo.db
+#COPY Demo.db ./app
 RUN dotnet ef database update
 
-# Ensure that we generate and migrate the database 
-# WORKDIR /app/out
-# RUN dotnet ef database update
-
-# Build runtime image
-FROM microsoft/dotnet:aspnetcore-runtime
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Demo.API.dll"]

@@ -1,8 +1,4 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +7,11 @@ namespace Demo.Identity
 {
     public class Startup
     {
-        public IHostingEnvironment Environment { get; }
+        private readonly IHostingEnvironment _environment;
 
         public Startup(IHostingEnvironment environment)
         {
-            Environment = environment;
+            _environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -26,9 +22,10 @@ namespace Demo.Identity
             var builder = services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients());
+                .AddInMemoryClients(Config.GetClients())
+                .AddTestUsers(Config.GetUsers());
 
-            if (Environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
             }
@@ -40,7 +37,7 @@ namespace Demo.Identity
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

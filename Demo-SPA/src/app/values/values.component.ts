@@ -12,7 +12,7 @@ export class ValuesComponent implements OnInit {
   constructor(private valueService: ValueService) {}
 
   async ngOnInit() {
-    const pagedList = await this.valueService.getAll();
+    const pagedList = await this.valueService.getAll(0, 10);
     this.values = pagedList.items;
   }
 }

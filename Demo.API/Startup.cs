@@ -3,6 +3,7 @@ using Demo.API.Data;
 using Demo.API.Dtos;
 using Demo.API.Helpers;
 using Demo.API.Models;
+using Demo.API.Services;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -28,25 +29,25 @@ namespace Demo.API
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettingsSection = _configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
+            services.AddDbContext<DataContext>(
+                        x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")))
                     .AddUnitOfWork<DataContext>();
 
             //services.AddEFSecondLevelCache();
@@ -59,6 +60,7 @@ namespace Demo.API
                         .WithMicrosoftMemoryCacheHandle()
                         .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
                         .Build());
+
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -71,6 +73,7 @@ namespace Demo.API
             {
                 options.Level = CompressionLevel.Fastest;
             });
+
             services.AddResponseCaching();
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Latest)
@@ -81,8 +84,11 @@ namespace Demo.API
                     });
 
             services.AddCors();
+
             services.AddTransient<Seed>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUsersService, UsersService>();
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -100,8 +106,17 @@ namespace Demo.API
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-                options.Authority = "https://localhost:5003";
             });
+
+            // services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            // .AddIdentityServerAuthentication(options =>
+            // {
+            //     // base-address of your identityserver
+            //     options.Authority = "https://localhost:5003";
+
+            //     // name of the API resource
+            //     options.ApiName = "api1";
+            // });
 
             // Add API Versioning
             // the default version is 1.0
@@ -129,8 +144,8 @@ namespace Demo.API
                     {
                         return true;
                     }
-                    return actionApiVersionModel.DeclaredApiVersions.Any() ? 
-                        actionApiVersionModel.DeclaredApiVersions.Any(v => $"v{v.ToString()}" == docName) : 
+                    return actionApiVersionModel.DeclaredApiVersions.Any() ?
+                        actionApiVersionModel.DeclaredApiVersions.Any(v => $"v{v.ToString()}" == docName) :
                         actionApiVersionModel.ImplementedApiVersions.Any(v => $"v{v.ToString()}" == docName);
                 });
                 c.OperationFilter<ApiVersionOperationFilter>();
@@ -195,7 +210,10 @@ namespace Demo.API
                 c.SwaggerEndpoint("/swagger/v2.0/swagger.json", "Versioned Api v2.0");
                 c.DocExpansion(DocExpansion.None);
             });
-            app.UseAuthentication();
+            // app.UseAuthentication();
+
+
+
             app.UseResponseCompression();
             app.UseResponseCaching();
             app.Use(async (context, next) =>
@@ -227,7 +245,7 @@ namespace Demo.API
                             .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
                             .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
                             .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
-            
+
             app.UseMvc();
         }
     }

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+
 import {
   NgxWebstorageModule,
   LocalStorageService,
@@ -13,6 +14,8 @@ import {
   RoutingService
 } from '@microsoft/mezzurite-angular';
 import { BsDropdownModule } from 'ngx-bootstrap';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { ValuesComponent } from './values/values.component';
@@ -61,6 +64,7 @@ import { UserComponent } from './user/user.component';
     UserComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,

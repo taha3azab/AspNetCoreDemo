@@ -13,7 +13,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 
 @Injectable()
 export class AuthService {
-  baseUrl = 'https://localhost:5001/api/auth/';
+  baseUrl = 'http://localhost:7000/demo-api/auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
 

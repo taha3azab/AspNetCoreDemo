@@ -4,4 +4,6 @@ namespace Demo.API.Helpers
     {
         public string Secret { get; set; }
     }
+
+    
 }

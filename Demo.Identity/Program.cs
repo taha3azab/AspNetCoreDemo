@@ -23,13 +23,13 @@ namespace Demo.Identity
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                    .ConfigureLogging((context, logging) =>
-                    {
-                        logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-                        logging.AddConsole();
-                        logging.AddDebug();
-                        logging.AddEventSourceLogger();
-                    })
+                    // .ConfigureLogging((context, logging) =>
+                    // {
+                    //     logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    //     logging.AddConsole();
+                    //     logging.AddDebug();
+                    //     logging.AddEventSourceLogger();
+                    // })
                     .UseStartup<Startup>()
                     .UseSerilog((context, configuration) =>
                     {

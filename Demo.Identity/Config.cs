@@ -4,6 +4,7 @@
 
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityServer4.Test;
 
 namespace Demo.Identity
 {
@@ -26,21 +27,38 @@ namespace Demo.Identity
         {
             return new List<Client>
             {
+                // other clients omitted...
+
+                // resource owner password grant client
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "openid" }
+                }
+            };
+        }
+    
+        public static List<TestUser> GetUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId = "1",
+                    Username = "alice",
+                    Password = "password"
+                },
+                new TestUser
+                {
+                    SubjectId = "2",
+                    Username = "bob",
+                    Password = "password"
                 }
             };
         }

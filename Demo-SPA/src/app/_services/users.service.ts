@@ -6,6 +6,6 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class UsersService extends DataService<User> {
   constructor(https: HttpClient) {
-    super('https://localhost:5001/api/users/', https);
+    super('http://localhost:7000/demo-api/users', https);
   }
 }

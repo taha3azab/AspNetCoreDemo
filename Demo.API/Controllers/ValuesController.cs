@@ -1,7 +1,6 @@
 ﻿using Demo.API.Dtos;
 using Demo.API.Models;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -15,7 +14,7 @@ namespace Demo.API.Controllers
     [ApiVersion("2.0")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class ValuesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

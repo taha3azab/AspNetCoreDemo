@@ -4,7 +4,6 @@
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
 @import '../node_modules/alertifyjs/build/css/alertify.min.css';
 @import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
-
 body {
   padding: 20px;
 }
@@ -12,3 +11,6 @@ body {
 .form-control.ng-invalid.ng-touched {
   border: 2px solid red;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
