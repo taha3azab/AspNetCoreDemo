@@ -15,8 +15,10 @@ D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.runtimeco
 D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.dll
 D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
 D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csprojAssemblyReference.cache
-D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csproj.CoreCompileInputs.cache
 D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfoInputs.cache
 D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfo.cs
 D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.dll
 D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\appsettings.Development.json
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\appsettings.json
+D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\ocelot.json
