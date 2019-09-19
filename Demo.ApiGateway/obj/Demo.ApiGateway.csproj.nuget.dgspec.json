@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Course\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj": {}
+    "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj": {}
   },
   "projects": {
-    "D:\\Course\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj": {
+    "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Course\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
+        "projectUniqueName": "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
         "projectName": "Demo.ApiGateway",
-        "projectPath": "D:\\Course\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
+        "projectPath": "E:\\Projects\\Demo\\Demo.ApiGateway\\Demo.ApiGateway.csproj",
         "packagesPath": "C:\\Users\\Taha\\.nuget\\packages\\",
-        "outputPath": "D:\\Course\\Demo\\Demo.ApiGateway\\obj\\",
+        "outputPath": "E:\\Projects\\Demo\\Demo.ApiGateway\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Taha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -53,7 +51,7 @@
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
-              "version": "[1.9.5, )"
+              "version": "[1.7.12, )"
             },
             "Ocelot.Provider.Eureka": {
               "target": "Package",
