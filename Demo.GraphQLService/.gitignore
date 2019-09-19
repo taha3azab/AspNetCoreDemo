@@ -17,6 +17,10 @@
 mono_crash.*
 
 # Build results
+.vscode
+bin
+obj
+*.db
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
