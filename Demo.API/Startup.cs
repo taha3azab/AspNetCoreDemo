@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Steeltoe.Discovery.Client;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
@@ -69,6 +70,7 @@ namespace Demo.API
                 //         new[] { "application/xml", "application/json", "image/svg+xml" });
                 options.EnableForHttps = true;
             });
+
             services.Configure<GzipCompressionProviderOptions>(options =>
             {
                 options.Level = CompressionLevel.Fastest;
@@ -88,6 +90,8 @@ namespace Demo.API
             services.AddTransient<Seed>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUsersService, UsersService>();
+
+            services.AddDiscoveryClient(_configuration);
 
             services.AddAuthentication(x =>
             {
@@ -169,9 +173,11 @@ namespace Demo.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
+
             app.UseStaticFiles();
             if (env.IsDevelopment())
             {
+                seeder.SeedUsers().Wait();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -192,7 +198,7 @@ namespace Demo.API
 
                 app.UseHsts();
             }
-            // seeder.SeedUsers();
+            
             app.UseHttpsRedirection();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -246,6 +252,7 @@ namespace Demo.API
                             .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
                             .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
 
+            app.UseDiscoveryClient();
             app.UseMvc();
         }
     }

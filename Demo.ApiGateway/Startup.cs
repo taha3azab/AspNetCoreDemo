@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Eureka;
 
 namespace Demo.ApiGateway
 {
@@ -18,8 +19,8 @@ namespace Demo.ApiGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOcelot(_configuration);
-            //.AddConsul();
+            services.AddOcelot(_configuration)
+                .AddEureka();//.AddConsul();
 
             // add CORS policy for non-IdentityServer endpoints
             services.AddCors(options =>
