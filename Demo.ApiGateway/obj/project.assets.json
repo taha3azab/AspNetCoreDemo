@@ -1558,7 +1558,7 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.7.12": {
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.9.5": {
         "type": "package",
         "build": {
           "build/Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props": {},
@@ -4817,10 +4817,10 @@
         "version.txt"
       ]
     },
-    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.7.12": {
-      "sha512": "hkaY6So+2G9eVo8WdqMDeyXfYd0OLLOA8V0xeKXleCjeu1wh1JN2LFDPphpfVgIZrxiOU/ZOWBYaASxj9M8SDg==",
+    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.9.5": {
+      "sha512": "rSZX0aAxacegOntSNMUO3rkM9ocp5jrnaM7xdzhBn3OB5XN1aFHDhoXhCswSlXwGnHmIAMxNSfLsCh9bWOnTzw==",
       "type": "package",
-      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.7.12",
+      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.9.5",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -4832,7 +4832,7 @@
         "build/Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets",
         "build/ToolsTarget.props",
         "build/ToolsTarget.targets",
-        "microsoft.visualstudio.azure.containers.tools.targets.1.7.12.nupkg.sha512",
+        "microsoft.visualstudio.azure.containers.tools.targets.1.9.5.nupkg.sha512",
         "microsoft.visualstudio.azure.containers.tools.targets.nuspec",
         "tools/Microsoft.VisualStudio.Containers.Tools.Common.dll",
         "tools/Microsoft.VisualStudio.Containers.Tools.Shared.dll",
@@ -9117,7 +9117,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.NETCore.App >= 2.2.0",
-      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.7.12",
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.9.5",
       "Serilog >= 2.8.0",
       "Serilog.AspNetCore >= 3.0.0",
       "Serilog.Sinks.Console >= 3.1.1",
@@ -9177,7 +9177,7 @@
           },
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
             "target": "Package",
-            "version": "[1.7.12, )"
+            "version": "[1.9.5, )"
           },
           "Serilog": {
             "target": "Package",

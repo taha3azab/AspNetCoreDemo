@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Course\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj": {}
+    "E:\\Projects\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj": {}
   },
   "projects": {
-    "D:\\Course\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj": {
+    "E:\\Projects\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Course\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj",
+        "projectUniqueName": "E:\\Projects\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj",
         "projectName": "Demo.GraphQLService",
-        "projectPath": "D:\\Course\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj",
+        "projectPath": "E:\\Projects\\Demo\\Demo.GraphQLService\\Demo.GraphQLService.csproj",
         "packagesPath": "C:\\Users\\Taha\\.nuget\\packages\\",
-        "outputPath": "D:\\Course\\Demo\\Demo.GraphQLService\\obj\\",
+        "outputPath": "E:\\Projects\\Demo\\Demo.GraphQLService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Taha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
