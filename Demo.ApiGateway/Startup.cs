@@ -11,7 +11,7 @@ namespace Demo.ApiGateway
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -19,17 +19,12 @@ namespace Demo.ApiGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOcelot(_configuration)
-                .AddEureka();//.AddConsul();
-
             // add CORS policy for non-IdentityServer endpoints
-            services.AddCors(options =>
-            {
-                options.AddPolicy("api", policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
-            });
+            services.AddCors(options => 
+                options.AddDefaultPolicy(builder => 
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+            services.AddOcelot(_configuration).AddEureka();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +34,7 @@ namespace Demo.ApiGateway
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors("api");
+            app.UseCors();
             app.UseOcelot().Wait();
         }
 

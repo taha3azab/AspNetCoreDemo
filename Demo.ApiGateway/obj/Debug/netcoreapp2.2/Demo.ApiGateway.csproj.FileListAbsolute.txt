@@ -11,14 +11,3 @@ D:\Course\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
 D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\appsettings.Development.json
 D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\appsettings.json
 D:\Course\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\ocelot.json
-E:\Projects\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.deps.json
-E:\Projects\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.runtimeconfig.json
-E:\Projects\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.runtimeconfig.dev.json
-E:\Projects\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.dll
-E:\Projects\Demo\Demo.ApiGateway\bin\Debug\netcoreapp2.2\Demo.ApiGateway.pdb
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csprojAssemblyReference.cache
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.csproj.CoreCompileInputs.cache
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfoInputs.cache
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.AssemblyInfo.cs
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.dll
-E:\Projects\Demo\Demo.ApiGateway\obj\Debug\netcoreapp2.2\Demo.ApiGateway.pdb

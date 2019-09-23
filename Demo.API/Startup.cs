@@ -48,7 +48,8 @@ namespace Demo.API
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddDbContext<DataContext>(
-                        x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")))
+                        //x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")))
+                        x => x.UseInMemoryDatabase("demo.db"))
                     .AddUnitOfWork<DataContext>();
 
             //services.AddEFSecondLevelCache();
@@ -254,6 +255,7 @@ namespace Demo.API
             TypeAdapterConfig.GlobalSettings.Compiler = exp => exp.CompileFast();
 
             app.UseDiscoveryClient();
+            
             app.UseMvc();
         }
     }

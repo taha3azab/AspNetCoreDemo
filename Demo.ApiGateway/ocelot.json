@@ -1,5 +1,25 @@
 {
-  "ServiceDiscoveryProvider": {
-    "Type": "Eureka"
-  }
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Type": "Eureka"
+    }
+  },
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 1 },
+      "ServiceName": "demo-api",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/demo/{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/graphql",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": { "TtlSeconds": 1 },
+      "ServiceName": "graphql",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamPathTemplate": "/graphql"
+    }
+  ]
 }

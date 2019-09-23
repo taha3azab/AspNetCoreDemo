@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Steeltoe.Discovery.Client;
 
 namespace Demo.GraphQLService
 {
@@ -46,6 +47,8 @@ namespace Demo.GraphQLService
             .AddWebSockets();
 
             services.AddCors();
+
+            services.AddDiscoveryClient(_configuration);
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
@@ -56,6 +59,9 @@ namespace Demo.GraphQLService
             }
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+
+            app.UseDiscoveryClient();
 
             app.UseWebSockets();
 

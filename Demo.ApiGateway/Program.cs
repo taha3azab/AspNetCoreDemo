@@ -20,7 +20,7 @@ namespace Demo.ApiGateway
                         config.SetBasePath(context.HostingEnvironment.ContentRootPath)
                             .AddJsonFile("appsettings.json", true, true)
                             .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
-                            .AddJsonFile("ocelot.json")
+                            .AddJsonFile("ocelot.json", false, true)
                             .AddEnvironmentVariables();
                     })
                     .UseSerilog((context, config) =>
