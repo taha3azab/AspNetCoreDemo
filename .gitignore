@@ -278,7 +278,9 @@ pub/
 src/**/app.yaml
 src/**/inf.yaml
 
-/**/obj/**
+**/obj/**
+**/obj/*.*
 .vs/*.*
 **/bin/**
 **/bin/*.*
+**/obj/**/*.json
