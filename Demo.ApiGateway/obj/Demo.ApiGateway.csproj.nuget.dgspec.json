@@ -55,7 +55,7 @@
             },
             "Ocelot.Provider.Eureka": {
               "target": "Package",
-              "version": "(, )"
+              "version": "[13.5.2, )"
             },
             "Serilog": {
               "target": "Package",
@@ -79,16 +79,10 @@
             }
           },
           "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
+            "net461"
           ],
           "assetTargetFallback": true,
-          "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "warn": true
         }
       }
     }

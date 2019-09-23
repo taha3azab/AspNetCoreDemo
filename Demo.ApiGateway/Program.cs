@@ -17,8 +17,7 @@ namespace Demo.ApiGateway
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .ConfigureAppConfiguration((context, config) =>
                     {
-                        config
-                            .SetBasePath(context.HostingEnvironment.ContentRootPath)
+                        config.SetBasePath(context.HostingEnvironment.ContentRootPath)
                             .AddJsonFile("appsettings.json", true, true)
                             .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
                             .AddJsonFile("ocelot.json")

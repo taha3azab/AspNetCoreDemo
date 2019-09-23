@@ -16,6 +16,10 @@ namespace Demo.API.Data
 
         public async Task SeedUsers()
         {
+            var usrs = await _unitOfWork.GetRepository<User>().GetPagedListAsync();
+            _unitOfWork.GetRepository<User>().Delete(usrs.Items);
+            await _unitOfWork.SaveChangesAsync();
+
             var userData = await System.IO.File.ReadAllTextAsync("Data/UserSeedData.json");
             var users = JsonConvert.DeserializeObject<List<User>>(userData);
             foreach (var user in users)
@@ -25,11 +29,9 @@ namespace Demo.API.Data
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 user.Username = user.Username.ToLower();
-
-                await _unitOfWork.GetRepository<User>().InsertAsync(user);
-
             }
 
+            await _unitOfWork.GetRepository<User>().InsertAsync(users);
             await _unitOfWork.SaveChangesAsync();
         }
 

@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>Docker</ActiveDebugProfile>
+    <ActiveDebugProfile>Demo.ApiGateway</ActiveDebugProfile>
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
 </Project>

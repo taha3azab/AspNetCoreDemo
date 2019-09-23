@@ -4,6 +4,7 @@ using Demo.API.Dtos;
 using Demo.API.Helpers;
 using Demo.API.Models;
 using Demo.API.Services;
+using FastExpressionCompiler;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,6 @@ namespace Demo.API
             _configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // configure strongly typed settings objects
@@ -251,6 +251,7 @@ namespace Demo.API
                             .Map(dest => dest.Age, src => src.DateOfBirth.CalculateAge())
                             .Map(dest => dest.PhotoUrl, src => src.Photos.FirstOrDefault(p => p.IsMain).Url)
                             .IgnoreIf((src, dest) => src.Photos.FirstOrDefault(p => p.IsMain) == null, dest => dest.PhotoUrl);
+            TypeAdapterConfig.GlobalSettings.Compiler = exp => exp.CompileFast();
 
             app.UseDiscoveryClient();
             app.UseMvc();

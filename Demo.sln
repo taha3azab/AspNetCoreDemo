@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.ApiGateway", "Demo.Api
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.GraphQLService", "Demo.GraphQLService\Demo.GraphQLService.csproj", "{EC0276E9-726A-420E-9B87-BB3EE2B09F0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Application", "Demo.Application\Demo.Application.csproj", "{F2790C54-0C69-4D4B-A3F0-B75D70F99939}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Application", "Demo.Application\Demo.Application.csproj", "{F2790C54-0C69-4D4B-A3F0-B75D70F99939}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Data", "Demo.Data\Demo.Data.csproj", "{E168BBFB-9488-4D8C-B96F-B49CD2999323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Data", "Demo.Data\Demo.Data.csproj", "{E168BBFB-9488-4D8C-B96F-B49CD2999323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
